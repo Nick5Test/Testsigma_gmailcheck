@@ -1,9 +1,8 @@
 package com.alten.testsigma.addons.android.test;
 
 
-import com.alten.testsigma.addons.android.LaunchAppWithBundleID;
 
-import com.testsigma.sdk.TestData;
+import com.alten.testsigma.addons.android.LaunchAppWithBundleID;
 import com.testsigma.sdk.runners.ActionRunner;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -12,9 +11,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.net.URL;
-import java.time.Duration;;
+import java.time.Duration;
 
-public class TestAndroidAction {
+;
+
+public class TestAndroidAction_Samsung {
     private ActionRunner runner;
     private AndroidDriver driver;
 
@@ -24,19 +25,18 @@ public class TestAndroidAction {
         DesiredCapabilities caps = new DesiredCapabilities();
 
         caps.setCapability("app", "C:\\NexiPay\\NEXIPay_7.9.1-mock-debugDexguard.apk");
-        caps.setCapability("deviceName", "huawei-ana_nx9-VWS0220428003258");
-        caps.setCapability("udid", "VWS0220428003258");
+        caps.setCapability("deviceName", "samsung-sm_g991b-R5CR92NRVNP");
+        caps.setCapability("udid", "R5CR92NRVNP");
         caps.setCapability("platformName", "ANDROID");
         driver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), caps);
         caps.setCapability("noReset","true");
         caps.setCapability("fullReset","false");
-        caps.setCapability("appPackage", "it.icbpi.mobile"); // Sostituisci con il pacchetto dell'app
+        caps.setCapability("appPackage", "it.icbpi.mobile"); // Sostituisci con il pacchetto dell'app  it.icbpi.mobile
         caps.setCapability("appActivity", "it.icbpi.mobile.feature.launchmode.LaunchModeActivity");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         //driver.executeScript("mobile: activeApp", ImmutableMap.of("appPackage", driver.getCapabilities().getCapability("appium:appPackage")));
 
         //driver.executeScript("mobile: appActivity", ImmutableMap.of("appPackage", ""));
-        runner = new ActionRunner(driver); //Initialie Action runner
 
     }
 
@@ -44,7 +44,7 @@ public class TestAndroidAction {
     public void Test() throws Exception {
         LaunchAppWithBundleID action = new LaunchAppWithBundleID();
         //InboxEmailAllRead action = new InboxEmailAllRead();
-        action.setBundleid(new TestData("com.huawei.email"));
+
         runner.run(action);
     }
 
