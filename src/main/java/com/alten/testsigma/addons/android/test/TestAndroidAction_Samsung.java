@@ -1,8 +1,7 @@
 package com.alten.testsigma.addons.android.test;
-
-
-
+import com.alten.testsigma.addons.android.GmailCheckDeviceInfo;
 import com.alten.testsigma.addons.android.LaunchAppWithBundleID;
+import com.testsigma.sdk.TestData;
 import com.testsigma.sdk.runners.ActionRunner;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -34,17 +33,16 @@ public class TestAndroidAction_Samsung {
         caps.setCapability("appPackage", "it.icbpi.mobile"); // Sostituisci con il pacchetto dell'app  it.icbpi.mobile
         caps.setCapability("appActivity", "it.icbpi.mobile.feature.launchmode.LaunchModeActivity");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        //driver.executeScript("mobile: activeApp", ImmutableMap.of("appPackage", driver.getCapabilities().getCapability("appium:appPackage")));
-
-        //driver.executeScript("mobile: appActivity", ImmutableMap.of("appPackage", ""));
+        runner = new ActionRunner(driver);
 
     }
 
     @Test
     public void Test() throws Exception {
-        LaunchAppWithBundleID action = new LaunchAppWithBundleID();
-        //InboxEmailAllRead action = new InboxEmailAllRead();
-
+        GmailCheckDeviceInfo action = new GmailCheckDeviceInfo();
+        action.setPassword(new TestData("ntgq zkne mhri vplj"));
+        action.setUsername(new TestData("nexitestautomation@gmail.com"));
+        action.setTargetPhrase(new TestData("Attenzione! Non è stato possibile richiamare le informazioni sul luogo di accesso"));
         runner.run(action);
     }
 
