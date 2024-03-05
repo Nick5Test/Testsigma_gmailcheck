@@ -1,4 +1,5 @@
 package com.alten.testsigma.addons.android.test;
+import com.alten.testsigma.addons.android.GmailCheckContentSubj;
 import com.alten.testsigma.addons.android.GmailCheckDeviceInfo;
 import com.alten.testsigma.addons.android.LaunchAppWithBundleID;
 import com.testsigma.sdk.TestData;
@@ -39,10 +40,11 @@ public class TestAndroidAction_Samsung {
 
     @Test
     public void Test() throws Exception {
-        GmailCheckDeviceInfo action = new GmailCheckDeviceInfo();
-        action.setPassword(new TestData("ntgq zkne mhri vplj"));
-        action.setUsername(new TestData("nexitestautomation@gmail.com"));
-        action.setTargetPhrase(new TestData("Attenzione! Non è stato possibile richiamare le informazioni sul luogo di accesso"));
+        GmailCheckContentSubj action = new GmailCheckContentSubj();
+        action.setPassword(new TestData("eiwb mnht orla uxdr"));
+        action.setUsername(new TestData("nexi.mpos@gmail.com"));
+        action.setTargetPhrase(new TestData("0.15"));
+        action.setSubject(new TestData("Ricevuta Autorizzazione 637806"));
         runner.run(action);
     }
 
