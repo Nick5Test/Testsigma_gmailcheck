@@ -43,8 +43,8 @@ public class TestAndroidAction_Samsung {
         GmailCheckContentSubj action = new GmailCheckContentSubj();
         action.setPassword(new TestData("eiwb mnht orla uxdr"));
         action.setUsername(new TestData("nexi.mpos@gmail.com"));
-        action.setTargetPhrase(new TestData("0.15"));
-        action.setSubject(new TestData("Ricevuta Autorizzazione 637806"));
+        action.setTargetPhrase(new TestData("10.00|autorizzata"));
+        action.setSubject(new TestData("Ricevuta|Autjhgjhgorizzazione"));
         runner.run(action);
     }
 

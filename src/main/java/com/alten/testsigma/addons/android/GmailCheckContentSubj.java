@@ -77,7 +77,6 @@ public class GmailCheckContentSubj extends AndroidAction {
             partListContent = new ArrayList<>();
             partListContent.add(this.targetPhrase.getValue().toString());
         }
-
         try {
             //connessione server imap
             Store store = session.getStore("imap");
@@ -106,7 +105,7 @@ public class GmailCheckContentSubj extends AndroidAction {
                         } else {
                             System.out.println("Subject DOES NOT match");
                             setErrorMessage("Subject DOES NOT match");
-                            result = Result.FAILED;
+                            sub = false;
                             break;
                         }
                     }
@@ -124,12 +123,14 @@ public class GmailCheckContentSubj extends AndroidAction {
                                         // Print HTML content
                                         String htmlContent = (String) relatedBodyPart.getContent();
                                         for(String parte : partListContent){
-                                            if (htmlContent.contains(parte) && sub == true) {
+                                            if (htmlContent.contains(parte)) {
                                                 message.setFlag(Flags.Flag.SEEN, true);
-                                                System.out.println("Subject match and Phrase found !");
                                                 setSuccessMessage("Subject match and Phrase found !");
-                                                result = Result.SUCCESS;
                                                 phraseExists = true;
+                                            }else{
+                                                setErrorMessage("Subject match but Phrase NOT found !");
+                                                phraseExists = false;
+                                                break;
                                             }
                                         }
                                     }
@@ -137,22 +138,22 @@ public class GmailCheckContentSubj extends AndroidAction {
                             }
                         }
                     } else if (content instanceof String) {
-                        if (((String) content).contains(this.targetPhrase.getValue().toString()) && sub == true) {
-                            message.setFlag(Flags.Flag.SEEN, true);
-                            System.out.println("Subject match and Phrase found !");
-                            setSuccessMessage("Subject match and Phrase found !");
-                            result = Result.SUCCESS;
-                            phraseExists = true;
+                        for(String parte : partListContent) {
+                            if (((String) content).contains(parte)) {
+                                setSuccessMessage("Subject match and Phrase found !");
+                                phraseExists = true;
+                            } else {
+                                setErrorMessage("Subject match but Phrase NOT found !");
+                                phraseExists = false;
+                                break;
+                            }
                         }
-                    }
-                    if (phraseExists == false && sub == true) {
-                        System.out.println("Subject match but Phrase NOT found !");
-                        setErrorMessage("Subject match but Phrase NOT found !");
-                        result = Result.FAILED;
-                    }
 
+                    }
                 }
+                message.setFlag(Flags.Flag.SEEN, true);
             }
+
             if (unreadMessages == 0) {
                 System.out.println("0 NEW email found in INBOX ");
                 setErrorMessage("0 NEW email found in INBOX ");
@@ -161,8 +162,24 @@ public class GmailCheckContentSubj extends AndroidAction {
                 System.out.println(unreadMessages + " NEW email found unread in INBOX ");
                 logger.info(unreadMessages + " NEW email found unread in INBOX ");
             }
+
             folder.close(false);
             store.close();
+
+            if (sub==true && phraseExists == true) {
+                setSuccessMessage("Subject and phrase matched");
+                result= Result.SUCCESS;
+            }else if(sub==true && phraseExists == false) {
+                setErrorMessage("Subject match but phrase not found");
+                result = Result.FAILED;
+            }else if(sub==false && phraseExists == true) {
+                setErrorMessage("Subject doesn't match but phrase found");
+                result = Result.FAILED;
+            }else {
+                setErrorMessage("Subject and phrase don't found");
+                result = Result.FAILED;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERROR Exception: " + e);
