@@ -55,8 +55,8 @@ public class GmailCheckContentSubj extends AndroidAction {
         Session session = Session.getInstance(properties);
 
         List<String> partList = null;
-        if (this.subject.getValue().toString().contains("|")) {
-            String[] parts = this.subject.getValue().toString().split("\\|");
+        if (this.subject.getValue().toString().contains(",")) {
+            String[] parts = this.subject.getValue().toString().split(",");
             partList = new ArrayList<>();
             for (String part : parts) {
                 partList.add(part);
@@ -67,8 +67,8 @@ public class GmailCheckContentSubj extends AndroidAction {
         }
 
         List<String> partListContent = null;
-        if (this.targetPhrase.getValue().toString().contains("|")) {
-            String[] parti = this.targetPhrase.getValue().toString().split("\\|");
+        if (this.targetPhrase.getValue().toString().contains(",")) {
+            String[] parti = this.targetPhrase.getValue().toString().split(",");
             partListContent = new ArrayList<>();
             for (String parte : parti) {
                 partListContent.add(parte);
@@ -85,19 +85,17 @@ public class GmailCheckContentSubj extends AndroidAction {
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_WRITE);
             Message[] messages = folder.getMessages();
-            //Message lastMessage = messages[messages.length - 1];
+            Message lastMessage = messages[messages.length - 1];
             //markAllAsRead(messages);
 
-            for (int k = messages.length - 1; k >= 0; k--) {
-                count++;
-                Message message = messages[messages.length - count];
-                Flags flags = message.getFlags();
+
+                Flags flags = lastMessage.getFlags();
                 if (!flags.contains(Flags.Flag.SEEN) && unreadMessages != 1) {
                     unreadMessages++;
                     System.out.println("messages.length---" + messages.length);
-                    System.out.println("Subject: " + message.getSubject());
-                    System.out.println("From: " + message.getFrom()[0]);
-                    String subj = message.getSubject();
+                    System.out.println("Subject: " + lastMessage.getSubject());
+                    System.out.println("From: " + lastMessage.getFrom()[0]);
+                    String subj = lastMessage.getSubject();
                     for (String part : partList) {
                         if (subj.contains(part)) {
                             System.out.println(part);
@@ -109,7 +107,7 @@ public class GmailCheckContentSubj extends AndroidAction {
                             break;
                         }
                     }
-                    Object content = message.getContent();
+                    Object content = lastMessage.getContent();
                     if (content instanceof MimeMultipart) {
                         MimeMultipart multipart = (MimeMultipart) content;
                         for (int i = 0; i < multipart.getCount(); i++) {
@@ -124,7 +122,7 @@ public class GmailCheckContentSubj extends AndroidAction {
                                         String htmlContent = (String) relatedBodyPart.getContent();
                                         for(String parte : partListContent){
                                             if (htmlContent.contains(parte)) {
-                                                message.setFlag(Flags.Flag.SEEN, true);
+                                                lastMessage.setFlag(Flags.Flag.SEEN, true);
                                                 setSuccessMessage("Subject match and Phrase found !");
                                                 phraseExists = true;
                                             }else{
@@ -151,8 +149,8 @@ public class GmailCheckContentSubj extends AndroidAction {
 
                     }
                 }
-                message.setFlag(Flags.Flag.SEEN, true);
-            }
+            lastMessage.setFlag(Flags.Flag.SEEN, true);
+
 
             if (unreadMessages == 0) {
                 System.out.println("0 NEW email found in INBOX ");
@@ -167,6 +165,7 @@ public class GmailCheckContentSubj extends AndroidAction {
             store.close();
 
             if (sub==true && phraseExists == true) {
+                System.out.println("andafioruhefo");
                 setSuccessMessage("Subject and phrase matched");
                 result= Result.SUCCESS;
             }else if(sub==true && phraseExists == false) {
@@ -192,6 +191,11 @@ public class GmailCheckContentSubj extends AndroidAction {
     public static void markAllAsRead (Message[] messages) throws MessagingException {
         for (Message message : messages){
             message.setFlag(Flags.Flag.SEEN, true);
+        }
+    }
+    public static void deleteAllEmail (Message[] messages) throws MessagingException {
+        for (Message message : messages){
+            message.setFlag(Flags.Flag.DELETED, true);
         }
     }
 }

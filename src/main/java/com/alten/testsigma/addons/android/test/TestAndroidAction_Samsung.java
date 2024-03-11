@@ -2,6 +2,7 @@ package com.alten.testsigma.addons.android.test;
 import com.alten.testsigma.addons.android.GmailCheckContentSubj;
 import com.alten.testsigma.addons.android.GmailCheckDeviceInfo;
 import com.alten.testsigma.addons.android.LaunchAppWithBundleID;
+import com.alten.testsigma.addons.android.MPOSGestioneStampaScontrino;
 import com.testsigma.sdk.TestData;
 import com.testsigma.sdk.runners.ActionRunner;
 import io.appium.java_client.android.AndroidDriver;
@@ -40,12 +41,10 @@ public class TestAndroidAction_Samsung {
 
     @Test
     public void Test() throws Exception {
-        GmailCheckContentSubj action = new GmailCheckContentSubj();
-        action.setPassword(new TestData("eiwb mnht orla uxdr"));
-        action.setUsername(new TestData("nexi.mpos@gmail.com"));
-        action.setTargetPhrase(new TestData("10.00|autorizzata"));
-        action.setSubject(new TestData("Ricevuta|Autjhgjhgorizzazione"));
+        MPOSGestioneStampaScontrino action = new MPOSGestioneStampaScontrino();
+
         runner.run(action);
+
     }
 
     @AfterClass
