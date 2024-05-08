@@ -52,6 +52,7 @@ public class GmailCheckDeviceInfo extends AndroidAction {
 
         Session session = Session.getInstance(properties);
         AndroidDriver androidDriver = (AndroidDriver) this.driver;
+        //Recupero del modello di dispositivo su cui si sta eseguendo il test
         String piattaforma = capitalizeFirstLetter(androidDriver.getCapabilities().getCapability("platformName").toString());
         String marca = capitalizeFirstLetter(androidDriver.getCapabilities().getCapability("deviceManufacturer").toString());
         String modello = (androidDriver.getCapabilities().getCapability("deviceModel").toString().toUpperCase());
